@@ -14,14 +14,13 @@
 
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
-function useless_condition ( $where ) { return $where . ' AND 1=1 '; }
+require 'plugin-update-checker.php';
+$myUpdateChecker = Puc_v4_Factory::buildUpdateChecker('https://github.com/fixonweb/fix159170-hook_s',__FILE__, 'fix159154-search/fix159170-hook_s');
 
 add_filter( 'posts_where' , 'fix159170_posts_where' );
 function fix159170_posts_where( $where ) {
-	// global $query;
 	$busca = isset($_GET['s']) ? $_GET['s'] : '';
 	if($busca){
-		// wp_reset_query();
 		$where = '';
 		$where .= " 
 			AND
@@ -35,54 +34,8 @@ function fix159170_posts_where( $where ) {
 			AND post_status = 'publish'
 
 		";
-		// remove_all_actions ( '__after_loop');
-		// echo $where;
 	}
 	
 	return $where;
 }
 
-/*
-
-AND 
-( 
-	post_title LIKE 'Movimente-se %' 
-	or post_title LIKE '% Movimente-se %' 
-	or post_title LIKE '% Movimente-se' 
-	or post_title LIKE '% Movimente-se.' 
-) 
-AND 
-( 
-	post_title LIKE 'Movimente-se %' 
-	or post_title LIKE '% Movimente-se %' 
-	or post_title LIKE '% Movimente-se' 
-	or post_title LIKE '% Movimente-se.' 
-)
-
-
-
-
-AND 
-(
-	(
-		(wp_posts.post_title LIKE '{7aefc694b9dcb33fec06f4bed248c0aa85e54c689f4b66843c89e4bdad8b73bf}Movimente-se{7aefc694b9dcb33fec06f4bed248c0aa85e54c689f4b66843c89e4bdad8b73bf}')
-
-		OR (
-		wp_posts.post_excerpt LIKE '{7aefc694b9dcb33fec06f4bed248c0aa85e54c689f4b66843c89e4bdad8b73bf}Movimente-se{7aefc694b9dcb33fec06f4bed248c0aa85e54c689f4b66843c89e4bdad8b73bf}'
-		) 
-		OR (
-		wp_posts.post_content LIKE '{7aefc694b9dcb33fec06f4bed248c0aa85e54c689f4b66843c89e4bdad8b73bf}Movimente-se{7aefc694b9dcb33fec06f4bed248c0aa85e54c689f4b66843c89e4bdad8b73bf}'
-		)
-	)
-) 
-AND 
-(
-	wp_posts.post_password = ''
-) 
-AND 
-wp_posts.post_type IN ('post', 'page', 'attachment', 'meu_espaco') 
-AND (wp_posts.post_status = 'publish') 
-AND wp_posts.post_type = 'elementor_font' 
-AND (wp_posts.post_status = 'publish')
-
-*/
